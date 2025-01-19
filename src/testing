@@ -1,0 +1,77 @@
+
+from bs4 import BeautifulSoup
+from dataclass import RawCursos, RawProfessores
+from logger import Logger
+from requests import get
+from utils import get_df_from_model_list
+from web_scrapper import WebScrapper, WebScrapperFactory
+import requests
+import pandas as pd
+
+
+class ArxivScrapper(WebScrapper):
+    def __init__(self):
+        self.url = None
+        self.data = None
+
+    def config(self, url: str) -> None:
+        self.url = url
+
+    def captar(self) -> None:
+        """Fetch and parse the Arxiv page."""
+        if not self.url:
+            raise ValueError("URL is not configured.")
+        response = requests.get(self.url)
+        if response.status_code != 200:
+            raise Exception(f"Failed to fetch page. Status code: {response.status_code}")
+        soup = BeautifulSoup(response.content, 'html.parser')
+        self.data = self.extract_article_data(soup)
+
+    def extract_article_data(self, soup):
+        """Extract titles, authors, abstracts, and dates from the parsed HTML."""
+        titles, authors, abstracts, dates = [], [], [], []
+
+        articles = soup.find_all('dd')  # Each article is in a <dd> tag
+
+        for article in articles:
+            title_tag = article.find_previous_sibling('dt').find('div', class_='list-title')
+            title = title_tag.get_text(strip=True).replace('Title: ', '') if title_tag else ""
+
+            authors_tag = article.find('div', class_='list-authors')
+            author_list = authors_tag.get_text(strip=True).replace('Authors:', '') if authors_tag else ""
+
+            abstract_tag = article.find('p')
+            abstract = abstract_tag.get_text(strip=True) if abstract_tag else ""
+
+            date_tag = article.find_previous_sibling('dt').find('span', class_='list-date')
+            date = date_tag.get_text(strip=True).replace('Date: ', '') if date_tag else ""
+
+            titles.append(title)
+            authors.append(author_list)
+            abstracts.append(abstract)
+            dates.append(date)
+
+        return titles, authors, abstracts, dates
+
+    def persistir(self) -> None:
+        """Save the extracted data to a CSV file."""
+        if not self.data:
+            raise ValueError("No data to persist.")
+        df = pd.DataFrame({
+            'Title': self.data[0],
+            'Authors': self.data[1],
+            'Abstract': self.data[2],
+            'Date': self.data[3]
+        })
+        df.to_csv('arxiv_cs_ai_articles.csv', index=False)
+
+class ArxivScrapperFactory(WebScrapperFactory):
+    def createScrapper(self) -> WebScrapper:
+        return ArxivScrapper()
+
+if __name__ == "__main__":
+    factory = ArxivScrapperFactory()
+    scrapper = factory.createScrapper()
+    scrapper.config("https://arxiv.org/list/cs.AI/recent")
+    scrapper.scrapping()
+    print("Data successfully extracted and saved to 'arxiv_cs_ai_articles.csv'.")

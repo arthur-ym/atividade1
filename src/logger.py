@@ -1,6 +1,6 @@
 import logging
 
-from src.templates.singleton import Singleton
+from singleton import Singleton
 
 logging.basicConfig(
     level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s'
