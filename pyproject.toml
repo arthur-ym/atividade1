@@ -12,6 +12,7 @@ bs4 = "^0.0.2"
 pre-commit = "^4.0.1"
 numpy = "^2.2.2"
 pytest = "^8.3.4"
+logger = "^1.4"
 
 
 [build-system]
