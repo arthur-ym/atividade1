@@ -1,0 +1,27 @@
+repos:  #https://stefaniemolin.com/articles/devx/pre-commit/setup-guide/
+  # Repository containing various pre-commit hooks for general file checks.
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0  # Specify the version of the repository to use.
+    hooks:
+      - id: check-toml  # Validates TOML files for proper syntax.
+      - id: check-yaml  # Validates YAML files for proper syntax.
+      - id: end-of-file-fixer  # Ensures files end with a single newline.
+      - id: trailing-whitespace  # Removes trailing whitespace from files.
+
+  # Repository for Ruff, a fast Python linter and formatter.
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.1.5  # Specify the version of Ruff to use.
+    hooks:
+      - id: ruff
+        args:
+          - --fix  # Automatically fixes issues detected by Ruff.
+          - --exit-non-zero-on-fix  # Exits with a non-zero status if any issues were fixed.
+          - --show-fixes  # Displays the fixes made by Ruff.
+      - id: ruff-format  # Applies Ruff's formatting rules.
+
+  # Repository for validating Numpy-style docstrings.
+  - repo: https://github.com/numpy/numpydoc
+    rev: v1.6.0  # Specify the version of Numpydoc to use.
+    hooks:
+      - id: numpydoc-validation  # Validates Numpy-style docstrings in Python code.
+        exclude: (tests/|docs/).*  # Excludes files in `tests/` and `docs/` directories.

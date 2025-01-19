@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "atividade1"
+version = "0.1.0"
+description = "atividade webscrapper"
+authors = ["arthurym <arthuryamamoto25@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pandas = "^2.2.3"
+bs4 = "^0.0.2"
+pre-commit = "^4.0.1"
+numpy = "^2.2.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
