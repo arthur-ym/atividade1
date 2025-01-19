@@ -4,7 +4,7 @@ Data validators.
 from pydantic import BaseModel, Field
 
 
-class AiTitle(BaseModel):
+class Ai_Title(BaseModel):
     """
     Title validators.
     """
@@ -12,7 +12,7 @@ class AiTitle(BaseModel):
     title: str = Field(..., min_length=1, max_length=1000)
 
 
-class AiAuthors(BaseModel):
+class Ai_Authors(BaseModel):
     """
     Author validators.
     """
@@ -20,7 +20,7 @@ class AiAuthors(BaseModel):
     author: str = Field(..., min_length=1, max_length=1000)
 
 
-class AiLinks(BaseModel):
+class Ai_Links(BaseModel):
     """
     Link validators.
     """
