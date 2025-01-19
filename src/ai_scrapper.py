@@ -6,6 +6,7 @@ Inherits from the WebScrapper class to define scraping behavior and data handlin
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+from dataclass import Ai_Authors, Ai_Links, Ai_Title
 from logger import Logger
 from web_scrapper import WebScrapper
 
@@ -45,11 +46,12 @@ class arxiv_scrapper(WebScrapper):
         title = self.arquivos.find_all('div', class_='list-title mathjax')
         titles_list = []
         for item in title:
-            titles_list.append(
+            clean_title = (
                 item.text.replace('Title:\n          ', '')
                 .replace('\n        ', '')
                 .strip()
             )
+            titles_list.append(Ai_Title(title=clean_title))
 
         # Extract authors
         list = self.arquivos.find_all('div', class_='list-authors')
@@ -58,14 +60,14 @@ class arxiv_scrapper(WebScrapper):
             authors = []
             for element in item:
                 if element.text != ', ':
-                    authors.append(element.text)
+                    authors.append(Ai_Authors(author=element.text))
             list_authors.append(authors)
 
         # Extract PDF links
         links = self.soup.find_all('a', string='pdf')
         links_list = []
         for element in links:
-            links_list.append('https://arxiv.org/' + element['href'])
+            links_list.append(Ai_Links(link='https://arxiv.org/' + element['href']))
 
         # Create a DataFrame
         self.df = pd.DataFrame(
