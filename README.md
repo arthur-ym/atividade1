@@ -4,3 +4,4 @@ Utilizamos o poetry para fazer gerenciamento de dependências e empacotamento pa
 "tool.poetry.dependencies" que representam as dependencias.
 Logo abaixo temos a configuração do Ruff. O Ruff é uma ferramenta para desenvolvedores que nos ajuda com linting e formatação de código Python.
 Cada commit que nós damos só será aceito se estivermos de acordo com o padrao decidido.
+Como melhoria futura, poodemos adicionar unit tests
