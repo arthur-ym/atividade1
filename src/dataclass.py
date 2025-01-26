@@ -1,5 +1,6 @@
 """
 Data validators.
+Utilizamos essas classes para validar os dados que são extraidos do webscrapper.
 """
 from pydantic import BaseModel, Field
 

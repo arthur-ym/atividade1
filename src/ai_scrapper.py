@@ -1,6 +1,7 @@
 """
-A class to scrape recent articles from the arXiv Computer Science AI category.
-Inherits from the WebScrapper class to define scraping behavior and data handling.
+Uma classe para coletar artigos recentes da categoria de IA em Ciência da Computação do arXiv.
+Herda da classe WebScrapper para definir o comportamento de coleta e o tratamento de dados.
+Salva os dados coletados em um arquivo CSV.
 """
 
 import pandas as pd
